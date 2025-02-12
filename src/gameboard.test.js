@@ -16,7 +16,7 @@ describe("placeShip", () => {
   });
 
   test("adds ship reference to board 2d array", () => {
-    expect(testGameboard.board[0][0]).toBe({ shipId: 0, hit: false });
-    expect(testGameboard.board[0][1]).toBe({ shipId: 0, hit: false });
+    expect(testGameboard.board[0][0]).toBe({ shipId: 0 });
+    expect(testGameboard.board[0][1]).toBe({ shipId: 0 });
   });
 });
