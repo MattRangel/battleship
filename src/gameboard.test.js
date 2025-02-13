@@ -42,3 +42,27 @@ describe("receiveAttack", () => {
     expect(spyShip).toHaveBeenCalled();
   });
 });
+
+test("isOver returns true only when all ships have been fully hit", () => {
+  const testGameboard = new Gameboard();
+
+  testGameboard.placeShip({
+    position: [0, 0],
+    direction: "horizontal",
+    length: 2,
+  });
+
+  testGameboard.placeShip({
+    position: [1, 0],
+    direction: "horizontal",
+    length: 2,
+  });
+
+  testGameboard.receiveAttack([0, 0]);
+  testGameboard.receiveAttack([0, 1]);
+  expect(testGameboard.isOver()).toBe(false);
+
+  testGameboard.receiveAttack([1, 0]);
+  testGameboard.receiveAttack([1, 1]);
+  expect(testGameboard.isOver()).toBe(true);
+});
