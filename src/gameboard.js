@@ -21,6 +21,10 @@ export default class Gameboard {
     this.ships[spot.shipId].hit();
   }
 
+  isOver() {
+    return this.ships.every((ship) => ship.isSunk());
+  }
+
   #getSpots({ position, direction, length }) {
     const directionNum = ["vertical", "horizontal"].indexOf(direction);
 
