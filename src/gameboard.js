@@ -15,6 +15,12 @@ export default class Gameboard {
     });
   }
 
+  receiveAttack(position) {
+    const spot = this.board[position[0]][position[1]];
+    spot.hit = true;
+    this.ships[spot.shipId].hit();
+  }
+
   #getSpots({ position, direction, length }) {
     const directionNum = ["vertical", "horizontal"].indexOf(direction);
 
