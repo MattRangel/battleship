@@ -33,9 +33,14 @@ describe("receiveAttack", () => {
   const spyShip = jest.spyOn(testGameboard.ships[0], "hit");
 
   testGameboard.receiveAttack([0, 0]);
+  testGameboard.receiveAttack([1, 0]);
 
   test("marks spot as hit", () => {
     expect(testGameboard.boardData[0][0].hit).toBe(true);
+  });
+
+  test("marks empty spot as hit", () => {
+    expect(testGameboard.boardData[1][0].hit).toBe(true);
   });
 
   test("sends hit command to ship covering spot", () => {

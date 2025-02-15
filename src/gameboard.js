@@ -18,7 +18,7 @@ export default class Gameboard {
   receiveAttack(position) {
     const spot = this.boardData[position[0]][position[1]];
     spot.hit = true;
-    this.ships[spot.shipId].hit();
+    this.ships[spot.shipId]?.hit();
   }
 
   isOver() {
