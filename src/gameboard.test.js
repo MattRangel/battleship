@@ -16,8 +16,8 @@ describe("placeShip", () => {
   });
 
   test("adds ship reference to board 2d array", () => {
-    expect(testGameboard.data[0][0]).toEqual({ shipId: 0 });
-    expect(testGameboard.data[0][1]).toEqual({ shipId: 0 });
+    expect(testGameboard.data[0][0]).toMatchObject({ shipId: 0 });
+    expect(testGameboard.data[0][1]).toMatchObject({ shipId: 0 });
   });
 });
 
