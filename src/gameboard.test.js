@@ -71,3 +71,9 @@ test("isOver returns true only when all ships have been fully hit", () => {
   testGameboard.receiveAttack([1, 1]);
   expect(testGameboard.isOver()).toBe(true);
 });
+
+test("Data objects are initialized with their correct row and column attributes", () => {
+  const testGameboard = new Gameboard();
+  expect(testGameboard.data[0][0]).toMatchObject({ row: 0, column: 0 });
+  expect(testGameboard.data[5][8]).toMatchObject({ row: 5, column: 8 });
+});

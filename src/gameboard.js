@@ -36,6 +36,8 @@ export default class Gameboard {
   }
 
   static #createBoard(size) {
-    return [...Array(size)].map(() => [...Array(size)].map(() => new Object()));
+    return [...Array(size)].map((_, row) =>
+      [...Array(size)].map((_, column) => new Object({ row, column })),
+    );
   }
 }
