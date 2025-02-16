@@ -3,20 +3,20 @@ import Ship from "./ship";
 export default class Gameboard {
   constructor() {
     this.ships = [];
-    this.boardData = this.constructor.#createBoard(10);
+    this.data = this.constructor.#createBoard(10);
   }
 
   placeShip({ position, direction, length }) {
     const shipId = this.ships.push(new Ship(length)) - 1;
     const spots = this.#getSpots({ position, direction, length });
     spots.forEach((location) => {
-      const boardSpot = this.boardData[location[0]][location[1]];
+      const boardSpot = this.data[location[0]][location[1]];
       boardSpot.shipId = shipId;
     });
   }
 
   receiveAttack(position) {
-    const spot = this.boardData[position[0]][position[1]];
+    const spot = this.data[position[0]][position[1]];
     spot.hit = true;
     this.ships[spot.shipId]?.hit();
   }

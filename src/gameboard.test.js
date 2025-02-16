@@ -16,8 +16,8 @@ describe("placeShip", () => {
   });
 
   test("adds ship reference to board 2d array", () => {
-    expect(testGameboard.boardData[0][0]).toEqual({ shipId: 0 });
-    expect(testGameboard.boardData[0][1]).toEqual({ shipId: 0 });
+    expect(testGameboard.data[0][0]).toEqual({ shipId: 0 });
+    expect(testGameboard.data[0][1]).toEqual({ shipId: 0 });
   });
 });
 
@@ -36,11 +36,11 @@ describe("receiveAttack", () => {
   testGameboard.receiveAttack([1, 0]);
 
   test("marks spot as hit", () => {
-    expect(testGameboard.boardData[0][0].hit).toBe(true);
+    expect(testGameboard.data[0][0].hit).toBe(true);
   });
 
   test("marks empty spot as hit", () => {
-    expect(testGameboard.boardData[1][0].hit).toBe(true);
+    expect(testGameboard.data[1][0].hit).toBe(true);
   });
 
   test("sends hit command to ship covering spot", () => {
