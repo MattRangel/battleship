@@ -3,7 +3,10 @@ import * as Interface from "./dom-interface.js";
 
 export default class Game {
   constructor() {
-    this.players = [new Player(true), new Player(false)];
+    this.players = [
+      new Player(true, "Player 1"),
+      new Player(false, "Player 2"),
+    ];
     this.turn = 0;
     this.#autoFillBoards();
     this.#drawBoards();
@@ -17,24 +20,34 @@ export default class Game {
     return this.players[Math.abs((this.turn % 2) - 1)];
   }
 
-  takeTurn(position) {
-    this.#opponent.board.receiveAttack(position);
-    this.#prepareNextTurn();
+  get #winner() {
+    const loserIndex = this.players.findIndex((player) =>
+      player.board.isOver(),
+    );
+    return this.players[Math.abs(loserIndex - 1)];
   }
 
-  #prepareNextTurn() {
+  takeTurn(position) {
+    this.#opponent.board.receiveAttack(position);
     this.turn++;
+    this.#drawBoards();
+    this.#endTurn();
+  }
+
+  #endTurn() {
+    if (this.#winner) {
+      Interface.endGame(this.#winner.name);
+      return;
+    }
+
     if (!this.#currentPlayer.isHuman) {
       this.takeTurn(this.#getComputerMove());
     }
-    this.#drawBoards();
   }
 
   #drawBoards() {
-    Interface.drawBoards(
-      this.#currentPlayer.board.data,
-      this.#opponent.board.data,
-      (position) => this.takeTurn(position),
+    Interface.drawBoards(this.#currentPlayer, this.#opponent, (position) =>
+      this.takeTurn(position),
     );
   }
 

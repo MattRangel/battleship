@@ -42,3 +42,13 @@ button.spot:active {
   background-image: url("./media/icons/x.svg");
   background-size: cover;
 }
+
+.close-modal {
+  background-color: indianred;
+  padding: 0.2rem 1rem;
+  float: right;
+}
+
+dialog > h1 {
+  text-align: center;
+}

@@ -1,9 +1,17 @@
-export function drawBoards(boardData, oppBoardData, attackCallback) {
-  const playerBoardElement = getBoardElement(boardData, true, "You:");
+document.querySelector(".close-modal").addEventListener("click", (event) => {
+  event.target.parentElement.close();
+});
+
+export function drawBoards(player, opponent, attackCallback) {
+  const playerBoardElement = getBoardElement(
+    player.board.data,
+    true,
+    player.name,
+  );
   const opponentBoardElement = getBoardElement(
-    oppBoardData,
+    opponent.board.data,
     false,
-    "Opponent:",
+    opponent.name,
     attackCallback,
   );
   document
@@ -53,4 +61,18 @@ function getBoardElement(
   );
 
   return container;
+}
+
+export function endGame(name) {
+  document
+    .querySelectorAll(".board-grid button")
+    .forEach((button) => (button.disabled = true));
+  alertWinner(name);
+}
+
+function alertWinner(name) {
+  const alertModal = document.querySelector("#win-alert");
+  const header = document.querySelector("#win-alert h1");
+  header.innerText = `${name} has won!`;
+  alertModal.showModal();
 }
