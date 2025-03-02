@@ -1,6 +1,8 @@
-document.querySelector(".close-modal").addEventListener("click", (event) => {
-  event.target.parentElement.close();
-});
+document.querySelectorAll(".close-modal").forEach((button) =>
+  button.addEventListener("click", (event) => {
+    event.target.parentElement.close();
+  }),
+);
 
 export function drawBoards(player, opponent, attackCallback) {
   const playerBoardElement = getBoardElement(
