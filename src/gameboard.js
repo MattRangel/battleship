@@ -12,7 +12,7 @@ export default class Gameboard {
   placeShip({ position, direction, length }) {
     const shipId = this.ships.push(new Ship(length)) - 1;
     const spots = this.#getSpots({ position, direction, length });
-    if (this.#illegalPlacements(spots)) {
+    if (this.#checkIllegalPlacements(spots)) {
       throw new Error("Illegal ship placement!");
     }
     spots.forEach((location) => {
@@ -41,7 +41,7 @@ export default class Gameboard {
     });
   }
 
-  #illegalPlacements(spots) {
+  #checkIllegalPlacements(spots) {
     return spots.some((spot) => {
       return (
         spot[0] < 0 ||
