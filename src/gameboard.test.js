@@ -105,3 +105,34 @@ test("Data objects are initialized with their correct row and column attributes"
   expect(testGameboard.data[0][0]).toMatchObject({ row: 0, column: 0 });
   expect(testGameboard.data[5][8]).toMatchObject({ row: 5, column: 8 });
 });
+
+describe("legalPlacements", () => {
+  const testGameboard = new Gameboard();
+  test("returns all legal ship placements", () => {
+    expect(new Set(testGameboard.legalPlacements(10))).toEqual(
+      new Set([
+        { position: [0, 0], length: 10, direction: "vertical" },
+        { position: [0, 1], length: 10, direction: "vertical" },
+        { position: [0, 2], length: 10, direction: "vertical" },
+        { position: [0, 3], length: 10, direction: "vertical" },
+        { position: [0, 4], length: 10, direction: "vertical" },
+        { position: [0, 5], length: 10, direction: "vertical" },
+        { position: [0, 6], length: 10, direction: "vertical" },
+        { position: [0, 7], length: 10, direction: "vertical" },
+        { position: [0, 8], length: 10, direction: "vertical" },
+        { position: [0, 9], length: 10, direction: "vertical" },
+        { position: [0, 0], length: 10, direction: "horizontal" },
+        { position: [1, 0], length: 10, direction: "horizontal" },
+        { position: [2, 0], length: 10, direction: "horizontal" },
+        { position: [3, 0], length: 10, direction: "horizontal" },
+        { position: [4, 0], length: 10, direction: "horizontal" },
+        { position: [5, 0], length: 10, direction: "horizontal" },
+        { position: [6, 0], length: 10, direction: "horizontal" },
+        { position: [7, 0], length: 10, direction: "horizontal" },
+        { position: [8, 0], length: 10, direction: "horizontal" },
+        { position: [9, 0], length: 10, direction: "horizontal" },
+      ]),
+    );
+    expect(testGameboard.legalPlacements(10)).toHaveLength(20);
+  });
+});

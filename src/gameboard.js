@@ -53,6 +53,24 @@ export default class Gameboard {
     });
   }
 
+  legalPlacements(length) {
+    return this.data.flat().reduce((acc, spot) => {
+      const position = [spot.row, spot.column];
+
+      ["vertical", "horizontal"].forEach((direction) => {
+        if (
+          !this.#checkIllegalPlacements(
+            this.#getSpots({ position, length, direction }),
+          )
+        ) {
+          acc.push({ direction, position, length });
+        }
+      });
+
+      return acc;
+    }, []);
+  }
+
   static #createBoard(size) {
     return [...Array(size)].map((_, row) =>
       [...Array(size)].map((_, column) => new Object({ row, column })),
