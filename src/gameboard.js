@@ -54,21 +54,24 @@ export default class Gameboard {
   }
 
   legalPlacements(length) {
-    return this.data.flat().reduce((acc, spot) => {
-      const position = [spot.row, spot.column];
+    return this.data
+      .flat()
+      .filter((spot) => isNaN(spot?.shipId))
+      .reduce((acc, spot) => {
+        const position = [spot.row, spot.column];
 
-      ["vertical", "horizontal"].forEach((direction) => {
-        if (
-          !this.#checkIllegalPlacements(
-            this.#getSpots({ position, length, direction }),
-          )
-        ) {
-          acc.push({ direction, position, length });
-        }
-      });
+        ["vertical", "horizontal"].forEach((direction) => {
+          if (
+            !this.#checkIllegalPlacements(
+              this.#getSpots({ position, length, direction }),
+            )
+          ) {
+            acc.push({ direction, position, length });
+          }
+        });
 
-      return acc;
-    }, []);
+        return acc;
+      }, []);
   }
 
   static #createBoard(size) {
