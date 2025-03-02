@@ -19,6 +19,34 @@ describe("placeShip", () => {
     expect(testGameboard.data[0][0]).toMatchObject({ shipId: 0 });
     expect(testGameboard.data[0][1]).toMatchObject({ shipId: 0 });
   });
+
+  test("throws error when placing ship that would fall out of bounds", () => {
+    expect(() =>
+      testGameboard.placeShip({
+        position: [9, 0],
+        direction: "vertical",
+        length: 3,
+      }),
+    ).toThrow();
+
+    expect(() =>
+      testGameboard.placeShip({
+        position: [-2, 0],
+        direction: "horizontal",
+        length: 2,
+      }),
+    ).toThrow();
+  });
+
+  test("throws error when placing ship that would fall on another ship", () => {
+    expect(() =>
+      testGameboard.placeShip({
+        position: [0, 0],
+        direction: "vertical",
+        length: 2,
+      }),
+    ).toThrow();
+  });
 });
 
 describe("receiveAttack", () => {

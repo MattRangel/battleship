@@ -1,14 +1,20 @@
 import Ship from "./ship";
 
 export default class Gameboard {
+  #size;
+
   constructor() {
+    this.#size = 10;
     this.ships = [];
-    this.data = this.constructor.#createBoard(10);
+    this.data = this.constructor.#createBoard(this.#size);
   }
 
   placeShip({ position, direction, length }) {
     const shipId = this.ships.push(new Ship(length)) - 1;
     const spots = this.#getSpots({ position, direction, length });
+    if (this.#illegalPlacements(spots)) {
+      throw new Error("Illegal ship placement!");
+    }
     spots.forEach((location) => {
       const boardSpot = this.data[location[0]][location[1]];
       boardSpot.shipId = shipId;
@@ -32,6 +38,18 @@ export default class Gameboard {
       const newPosition = [...position];
       newPosition.splice(directionNum, 1, position[directionNum] + index);
       return newPosition;
+    });
+  }
+
+  #illegalPlacements(spots) {
+    return spots.some((spot) => {
+      return (
+        spot[0] < 0 ||
+        spot[1] < 0 ||
+        spot[0] >= this.#size ||
+        spot[1] >= this.#size ||
+        !isNaN(this.data[spot[0]][spot[1]]?.shipId)
+      );
     });
   }
 
