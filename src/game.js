@@ -2,14 +2,16 @@ import Player from "./player.js";
 import * as Interface from "./dom-interface.js";
 
 export default class Game {
+  #ships;
+
   constructor() {
+    this.#ships = [5, 4, 3, 3, 2];
     this.players = [
       new Player(true, "Player 1"),
       new Player(false, "Player 2"),
     ];
     this.turn = 0;
-    this.#autoFillBoards();
-    this.#drawBoards();
+    this.#fillBoards().then(() => this.#drawBoards());
   }
 
   get #currentPlayer() {
@@ -61,16 +63,42 @@ export default class Game {
     return [chosenSpot.row, chosenSpot.column];
   }
 
-  #autoFillBoards() {
-    this.players[0].board.placeShip({
-      position: [0, 0],
-      direction: "vertical",
-      length: 3,
-    });
-    this.players[1].board.placeShip({
-      position: [1, 0],
-      direction: "horizontal",
-      length: 3,
-    });
+  async #fillBoards() {
+    for (const player of this.players) {
+      await this.#fillBoard(player, this.#ships);
+    }
+  }
+
+  async #getShipPlacement(player, length) {
+    if (!player.isHuman) {
+      return this.#randomPlacement(player, length);
+    }
+
+    const placement = await new Promise((resolve) =>
+      Interface.getShipPlacement(player, resolve),
+    );
+    placement.length = length;
+    placement.direction = "vertical";
+    return placement;
+  }
+
+  async #fillBoard(player, shipLengths) {
+    for (const length of shipLengths) {
+      while (true) {
+        const placement = await this.#getShipPlacement(player, length);
+        try {
+          player.board.placeShip(placement);
+          break;
+        } catch {
+          Interface.illegalPlacement();
+        }
+      }
+    }
+    Interface.closeBoardCreation();
+  }
+
+  #randomPlacement(player, length) {
+    const placements = player.board.legalPlacements(length);
+    return placements[Math.floor(Math.random() * placements.length)];
   }
 }
