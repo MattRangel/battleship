@@ -36,13 +36,14 @@ export function getShipPlacement(player, callback) {
       true,
       `${player.name}, Place Your Ships`,
       (position) => {
+        closeBoardCreation();
         callback({ position });
       },
     ),
   );
 }
 
-export function closeBoardCreation() {
+function closeBoardCreation() {
   document.querySelector("#board-creation").close();
 }
 

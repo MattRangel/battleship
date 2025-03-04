@@ -94,7 +94,6 @@ export default class Game {
         }
       }
     }
-    Interface.closeBoardCreation();
   }
 
   #randomPlacement(player, length) {
