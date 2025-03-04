@@ -78,7 +78,6 @@ export default class Game {
       Interface.getShipPlacement(player, resolve),
     );
     placement.length = length;
-    placement.direction = "vertical";
     return placement;
   }
 

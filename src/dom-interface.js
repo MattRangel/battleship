@@ -37,7 +37,8 @@ export function getShipPlacement(player, callback) {
       `${player.name}, Place Your Ships`,
       (position) => {
         closeBoardCreation();
-        callback({ position });
+        const direction = document.querySelector("#place-ship-direction").value;
+        callback({ position, direction });
       },
     ),
   );
