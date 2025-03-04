@@ -21,6 +21,31 @@ export function drawBoards(player, opponent, attackCallback) {
     .replaceChildren(playerBoardElement, opponentBoardElement);
 }
 
+export function illegalPlacement() {
+  document
+    .querySelector("#board-creation")
+    .animate({ backgroundColor: ["revert", "darkred", "revert"] }, 750);
+}
+
+export function getShipPlacement(player, callback) {
+  document.querySelector("#board-creation").showModal();
+  const boardElement = document.querySelector(".board-container");
+  boardElement.replaceWith(
+    getBoardElement(
+      player.board.data,
+      true,
+      `${player.name}, Place Your Ships`,
+      (position) => {
+        callback({ position });
+      },
+    ),
+  );
+}
+
+export function closeBoardCreation() {
+  document.querySelector("#board-creation").close();
+}
+
 function getBoardElement(
   data,
   showShips,
@@ -41,7 +66,11 @@ function getBoardElement(
   data.forEach((row, rowIndex) => {
     row.forEach((spot, columnIndex) => {
       const spotElement = document.createElement(
-        showShips || !!spot?.hit ? "div" : "button",
+        (showShips && !!clickCallback && isNaN(spot?.shipId)) ||
+          !showShips ||
+          !!spot?.hit
+          ? "button"
+          : "div",
       );
       spotElement.classList.add("spot");
       spotElement.dataset.row = rowIndex;
