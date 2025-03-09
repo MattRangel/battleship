@@ -75,9 +75,8 @@ export default class Game {
     }
 
     const placement = await new Promise((resolve) =>
-      Interface.getShipPlacement(player, resolve),
+      Interface.getShipPlacement(player, length, resolve),
     );
-    placement.length = length;
     return placement;
   }
 

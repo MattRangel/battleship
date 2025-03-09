@@ -27,21 +27,25 @@ export function illegalPlacement() {
     .animate({ backgroundColor: ["revert", "darkred", "revert"] }, 750);
 }
 
-export function getShipPlacement(player, callback) {
+export function getShipPlacement(player, length, callback) {
   document.querySelector("#board-creation").showModal();
+
   const boardElement = document.querySelector(".board-container");
-  boardElement.replaceWith(
-    getBoardElement(
-      player.board.data,
-      true,
-      `${player.name}, Place Your Ships`,
-      (position) => {
-        closeBoardCreation();
-        const direction = document.querySelector("#place-ship-direction").value;
-        callback({ position, direction });
-      },
-    ),
+  const newBoardElement = getBoardElement(
+    player.board.data,
+    true,
+    `${player.name}, Place Your Ships`,
+    (position) => {
+      closeBoardCreation();
+      const direction = document.querySelector("#place-ship-direction").value;
+      callback({ position, direction, length });
+    },
   );
+  boardElement.replaceWith(newBoardElement);
+
+  const shipPreview = document.querySelector("#ship-preview");
+  const shipIcons = [...Array(length)].map(() => document.createElement("div"));
+  shipPreview.replaceChildren(...shipIcons);
 }
 
 function closeBoardCreation() {
