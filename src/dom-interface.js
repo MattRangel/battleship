@@ -72,9 +72,7 @@ function getBoardElement(
   data.forEach((row, rowIndex) => {
     row.forEach((spot, columnIndex) => {
       const spotElement = document.createElement(
-        (showShips && !!clickCallback && isNaN(spot?.shipId)) ||
-          !showShips ||
-          !!spot?.hit
+        !!clickCallback && (showShips ? isNaN(spot?.shipId) : !spot?.hit)
           ? "button"
           : "div",
       );
