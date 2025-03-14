@@ -70,3 +70,12 @@ button.spot:active {
 dialog > h1 {
   text-align: center;
 }
+
+.confirm {
+  float: none;
+  background-color: darkseagreen;
+}
+
+#pass-control::backdrop {
+  background-color: dimgray;
+}

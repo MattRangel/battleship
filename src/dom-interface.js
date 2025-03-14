@@ -105,3 +105,8 @@ function alertWinner(name) {
   header.innerText = `${name} has won!`;
   alertModal.showModal();
 }
+
+export function passControl() {
+  const modal = document.querySelector("#pass-control");
+  modal.showModal();
+}

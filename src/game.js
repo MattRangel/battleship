@@ -42,7 +42,9 @@ export default class Game {
       return;
     }
 
-    if (!this.#currentPlayer.isHuman) {
+    if (this.#currentPlayer.isHuman) {
+      Interface.passControl();
+    } else {
       this.takeTurn(this.#getComputerMove());
     }
   }
