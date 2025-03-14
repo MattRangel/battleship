@@ -48,8 +48,10 @@ export default class Game {
   }
 
   #drawBoards() {
-    Interface.drawBoards(this.#currentPlayer, this.#opponent, (position) =>
-      this.takeTurn(position),
+    Interface.drawBoards(this.#currentPlayer, this.#opponent).then(
+      (position) => {
+        this.takeTurn(position);
+      },
     );
   }
 
@@ -70,14 +72,9 @@ export default class Game {
   }
 
   async #getShipPlacement(player, length) {
-    if (!player.isHuman) {
-      return this.#randomPlacement(player, length);
-    }
-
-    const placement = await new Promise((resolve) =>
-      Interface.getShipPlacement(player, length, resolve),
-    );
-    return placement;
+    return player.isHuman
+      ? await Interface.getShipPlacement(player, length)
+      : this.#randomPlacement(player, length);
   }
 
   async #fillBoard(player, shipLengths) {

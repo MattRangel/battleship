@@ -4,21 +4,13 @@ document.querySelectorAll(".close-modal").forEach((button) =>
   }),
 );
 
-export function drawBoards(player, opponent, attackCallback) {
-  const playerBoardElement = getBoardElement(
-    player.board.data,
-    true,
-    player.name,
-  );
-  const opponentBoardElement = getBoardElement(
-    opponent.board.data,
-    false,
-    opponent.name,
-    attackCallback,
-  );
+export function drawBoards(player, opponent) {
+  const playerBoard = getBoard(player.board.data, true, player.name, false);
+  const opponentBoard = getBoard(opponent.board.data, false, opponent.name);
   document
     .querySelector("#boards")
-    .replaceChildren(playerBoardElement, opponentBoardElement);
+    .replaceChildren(playerBoard.element, opponentBoard.element);
+  return opponentBoard.promise;
 }
 
 export function illegalPlacement() {
@@ -27,39 +19,39 @@ export function illegalPlacement() {
     .animate({ backgroundColor: ["revert", "darkred", "revert"] }, 750);
 }
 
-export function getShipPlacement(player, length, callback) {
-  document.querySelector("#board-creation").showModal();
-
-  const boardElement = document.querySelector(".board-container");
-  const newBoardElement = getBoardElement(
-    player.board.data,
-    true,
-    `${player.name}, Place Your Ships`,
-    (position) => {
-      closeBoardCreation();
-      const direction = document.querySelector("#place-ship-direction").value;
-      callback({ position, direction, length });
-    },
-  );
-  boardElement.replaceWith(newBoardElement);
-
+export async function getShipPlacement(player, length) {
   const shipPreview = document.querySelector("#ship-preview");
   const shipIcons = [...Array(length)].map(() => document.createElement("div"));
   shipPreview.replaceChildren(...shipIcons);
+
+  const boardElement = document.querySelector(".board-container");
+  const newBoard = getBoard(
+    player.board.data,
+    true,
+    `${player.name}, Place Your Ships`,
+  );
+  boardElement.replaceWith(newBoard.element);
+  document.querySelector("#board-creation").showModal();
+
+  const position = await newBoard.promise;
+  const direction = document.querySelector("#place-ship-direction").value;
+
+  closeBoardCreation();
+
+  return {
+    position,
+    direction,
+    length,
+  };
 }
 
 function closeBoardCreation() {
   document.querySelector("#board-creation").close();
 }
 
-function getBoardElement(
-  data,
-  showShips,
-  headerText = "",
-  clickCallback = undefined,
-) {
-  const container = document.createElement("div");
-  container.classList.add("board-container");
+function getBoard(data, showShips, headerText = "", clickable = true) {
+  const element = document.createElement("div");
+  element.classList.add("board-container");
 
   const header = document.createElement("h2");
   header.innerText = headerText;
@@ -67,12 +59,12 @@ function getBoardElement(
   const boardGrid = document.createElement("div");
   boardGrid.classList.add("board-grid");
 
-  container.replaceChildren(header, boardGrid);
+  element.replaceChildren(header, boardGrid);
 
   data.forEach((row, rowIndex) => {
     row.forEach((spot, columnIndex) => {
       const spotElement = document.createElement(
-        !!clickCallback && (showShips ? isNaN(spot?.shipId) : !spot?.hit)
+        clickable && (showShips ? isNaN(spot?.shipId) : !spot?.hit)
           ? "button"
           : "div",
       );
@@ -88,14 +80,16 @@ function getBoardElement(
     });
   });
 
-  boardGrid.querySelectorAll("button").forEach((button) =>
-    button.addEventListener("click", (e) => {
-      const data = e.target.dataset;
-      clickCallback([+data.row, +data.column]);
-    }),
-  );
+  const promise = new Promise((resolve) => {
+    boardGrid.querySelectorAll("button").forEach((button) =>
+      button.addEventListener("click", (e) => {
+        const data = e.target.dataset;
+        resolve([+data.row, +data.column]);
+      }),
+    );
+  });
 
-  return container;
+  return { element, promise };
 }
 
 export function endGame(name) {
