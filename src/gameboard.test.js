@@ -136,3 +136,25 @@ describe("legalPlacements", () => {
     expect(testGameboard.legalPlacements(10)).toHaveLength(20);
   });
 });
+
+describe("reset", () => {
+  const testGameboard = new Gameboard();
+  testGameboard.placeShip({
+    position: [0, 0],
+    direction: "horizontal",
+    length: 2,
+  });
+
+  testGameboard.receiveAttack([0, 0]);
+
+  testGameboard.reset();
+  test("removes ships from board", () => {
+    expect(
+      testGameboard.data[0][0]?.shipId && testGameboard.data[0][1]?.shipId,
+    ).toBeFalsy();
+  });
+
+  test("removes hits from board", () => {
+    expect(testGameboard.data[0][0]?.hit).toBeFalsy;
+  });
+});

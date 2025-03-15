@@ -9,6 +9,11 @@ export default class Gameboard {
     this.data = this.constructor.#createBoard(this.#size);
   }
 
+  reset() {
+    this.ships = [];
+    this.data = this.constructor.#createBoard(this.#size);
+  }
+
   placeShip({ position, direction, length }) {
     const shipId = this.ships.push(new Ship(length)) - 1;
     const spots = this.#getSpots({ position, direction, length });
