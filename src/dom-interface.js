@@ -24,7 +24,9 @@ export async function getShipPlacement(player, length) {
   const shipIcons = [...Array(length)].map(() => document.createElement("div"));
   shipPreview.replaceChildren(...shipIcons);
 
-  const boardElement = document.querySelector(".board-container");
+  const boardElement = document.querySelector(
+    "#board-creation .board-container",
+  );
   const newBoard = getBoard(
     player.board.data,
     true,
@@ -92,16 +94,20 @@ function getBoard(data, showShips, headerText = "", clickable = true) {
   return { element, promise };
 }
 
-export function endGame(name) {
+export function endGame(name, restartCallback) {
   document
     .querySelectorAll(".board-grid button")
     .forEach((button) => (button.disabled = true));
-  alertWinner(name);
+  alertWinner(name, restartCallback);
 }
 
-function alertWinner(name) {
+function alertWinner(name, restartCallback) {
   const alertModal = document.querySelector("#win-alert");
-  const header = document.querySelector("#win-alert h1");
+  const header = alertModal.querySelector("h1");
+
+  const restartButton = alertModal.querySelector(".confirm");
+  restartButton.addEventListener("click", restartCallback);
+
   header.innerText = `${name} has won!`;
   alertModal.showModal();
 }

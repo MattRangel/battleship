@@ -48,7 +48,7 @@ export default class Game {
   #nextTurn() {
     this.#drawBoards();
     if (this.#winner) {
-      Interface.endGame(this.#winner.name);
+      Interface.endGame(this.#winner.name, () => this.restart());
       return;
     }
 
