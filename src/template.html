@@ -29,5 +29,22 @@
       <h1>Pass control to your opponent!</h1>
       <button class="close-modal confirm">Okay!</button>
     </dialog>
+    <dialog id="player-creation">
+      <form>
+        <h1></h1>
+        <label>
+          Type of Player:
+          <select name="isHuman">
+            <option value="true">Human</option>
+            <option value="false">Computer</option>
+          </select>
+        </label>
+        <label>
+          Name:
+          <input name="name" type="text" required />
+        </label>
+        <button type="submit" class="confirm">Confirm</button>
+      </form>
+    </dialog>
   </body>
 </html>

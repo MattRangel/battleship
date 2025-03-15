@@ -6,21 +6,18 @@ export default class Game {
 
   constructor() {
     this.#ships = [5, 4, 3, 3, 2];
-    this.players = [
-      new Player(true, "Player 1"),
-      new Player(false, "Player 2"),
-    ];
+    this.turn = 0;
+    this.players = [];
   }
 
   start() {
-    this.turn = 0;
-    this.#fillBoards().then(() => this.#nextTurn());
+    this.#createPlayers()
+      .then(this.#fillBoards.bind(this))
+      .then(this.#nextTurn.bind(this));
   }
 
   restart() {
-    for (const player of this.players) {
-      player.board.reset();
-    }
+    this.turn = 0;
     this.start();
   }
 
@@ -75,6 +72,17 @@ export default class Game {
     const chosenSpot = legalSpots[randomIndex];
 
     return [chosenSpot.row, chosenSpot.column];
+  }
+
+  async #createPlayers() {
+    for (const index of [0, 1]) {
+      const oldInfo = {
+        name: this.players[index]?.name,
+        isHuman: this.players[index]?.isHuman,
+      };
+      const playerInfo = await Interface.getPlayerInfo(index, oldInfo);
+      this.players[index] = new Player(playerInfo.isHuman, playerInfo.name);
+    }
   }
 
   async #fillBoards() {

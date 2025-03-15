@@ -61,9 +61,13 @@ button.spot:active {
   background-size: cover;
 }
 
+.confirm,
+.close-modal {
+  padding: 0.2rem 1rem;
+}
+
 .close-modal {
   background-color: indianred;
-  padding: 0.2rem 1rem;
   float: right;
 }
 
@@ -78,4 +82,9 @@ dialog > h1 {
 
 #pass-control::backdrop {
   background-color: dimgray;
+}
+
+dialog form label {
+  display: block;
+  margin: 1rem 0;
 }

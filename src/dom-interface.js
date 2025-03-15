@@ -4,6 +4,28 @@ document.querySelectorAll(".close-modal").forEach((button) =>
   }),
 );
 
+export function getPlayerInfo(index, oldInfo = {}) {
+  const modal = document.querySelector("#player-creation");
+  modal.querySelector("h1").innerText =
+    `Please enter info for Player ${index + 1}`;
+  modal.querySelector("input").value = oldInfo?.name || "";
+  modal.querySelector("select").value = isNaN(oldInfo?.isHuman)
+    ? "true"
+    : oldInfo.isHuman;
+  modal.showModal();
+
+  return new Promise((resolve) => {
+    modal.querySelector("form").onsubmit = (e) => {
+      e.preventDefault(e);
+      modal.close();
+      const isHuman = !!["false", "true"].indexOf(e.target.isHuman.value);
+      const name = e.target.name.value;
+      e.target.reset();
+      resolve({ name, isHuman });
+    };
+  });
+}
+
 export function drawBoards(player, opponent) {
   const playerBoard = getBoard(player.board.data, true, "Your Board", false);
   const opponentBoard = getBoard(
