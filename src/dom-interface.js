@@ -5,8 +5,12 @@ document.querySelectorAll(".close-modal").forEach((button) =>
 );
 
 export function drawBoards(player, opponent) {
-  const playerBoard = getBoard(player.board.data, true, player.name, false);
-  const opponentBoard = getBoard(opponent.board.data, false, opponent.name);
+  const playerBoard = getBoard(player.board.data, true, "Your Board", false);
+  const opponentBoard = getBoard(
+    opponent.board.data,
+    false,
+    `${opponent.name}'s Board`,
+  );
   document
     .querySelector("#boards")
     .replaceChildren(playerBoard.element, opponentBoard.element);
