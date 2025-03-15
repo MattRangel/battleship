@@ -11,7 +11,7 @@ export default class Game {
       new Player(false, "Player 2"),
     ];
     this.turn = 0;
-    this.#fillBoards().then(() => this.#drawBoards());
+    this.#fillBoards().then(() => this.#nextTurn());
   }
 
   get #currentPlayer() {
@@ -32,11 +32,11 @@ export default class Game {
   takeTurn(position) {
     this.#opponent.board.receiveAttack(position);
     this.turn++;
-    this.#drawBoards();
-    this.#endTurn();
+    this.#nextTurn();
   }
 
-  #endTurn() {
+  #nextTurn() {
+    this.#drawBoards();
     if (this.#winner) {
       Interface.endGame(this.#winner.name);
       return;
