@@ -17,6 +17,13 @@ export default class Game {
     this.#fillBoards().then(() => this.#nextTurn());
   }
 
+  restart() {
+    for (const player of this.players) {
+      player.board.reset();
+    }
+    this.start();
+  }
+
   get #currentPlayer() {
     return this.players[this.turn % 2];
   }
