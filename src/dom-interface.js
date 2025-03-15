@@ -106,7 +106,8 @@ function alertWinner(name) {
   alertModal.showModal();
 }
 
-export function passControl() {
+export function passControl(name) {
   const modal = document.querySelector("#pass-control");
+  modal.querySelector("h1").innerText = `Pass control to ${name}`;
   modal.showModal();
 }

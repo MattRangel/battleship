@@ -45,7 +45,7 @@ export default class Game {
     if (!this.#currentPlayer.isHuman) {
       this.takeTurn(this.#getComputerMove());
     } else if (this.players.every((player) => player.isHuman)) {
-      Interface.passControl();
+      Interface.passControl(this.#currentPlayer.name);
     }
   }
 
