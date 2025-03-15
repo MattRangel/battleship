@@ -10,6 +10,9 @@ export default class Game {
       new Player(true, "Player 1"),
       new Player(false, "Player 2"),
     ];
+  }
+
+  start() {
     this.turn = 0;
     this.#fillBoards().then(() => this.#nextTurn());
   }

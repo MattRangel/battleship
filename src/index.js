@@ -1,3 +1,4 @@
 import "./style.css";
 import Game from "./game.js";
-new Game();
+const game = new Game();
+game.start();
